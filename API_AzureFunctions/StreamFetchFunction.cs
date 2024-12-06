@@ -1,4 +1,5 @@
 using System.Net;
+using API_AzureFunctions.Models;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
@@ -9,8 +10,11 @@ namespace API_AzureFunctions
     {
         private readonly ILogger _logger;
 
-        public StreamFetchFunction(ILoggerFactory loggerFactory)
+        private readonly MyDbContext _appDbContext;
+
+        public StreamFetchFunction(MyDbContext appDbContext , ILoggerFactory loggerFactory)
         {
+            _appDbContext = appDbContext;
             _logger = loggerFactory.CreateLogger<StreamFetchFunction>();
         }
 
