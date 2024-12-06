@@ -1,4 +1,5 @@
 using System.Net;
+using System.Text.Json;
 using API_AzureFunctions.Models;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
@@ -26,7 +27,14 @@ namespace API_AzureFunctions
             var response = req.CreateResponse(HttpStatusCode.OK);
             response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
 
-            response.WriteString("Welcome to Azure Functions!");
+            // Fetching data from the database
+            var fetchedStreams = _appDbContext.Streams.ToList();
+
+            // Serializing the fetched data to JSON
+            var jsonResponse = JsonSerializer.Serialize(fetchedStreams);
+
+            // Writing JSON response
+            response.WriteString(jsonResponse);
 
             return response;
         }
